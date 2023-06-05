@@ -103,12 +103,12 @@ public class NetworkClient: NetworkClientProtocol {
 
         if type == String.self {
             let text = data.count == 0 ? "" : String(decoding: data, as: UTF8.self)
-            return NetworkResult(statusCode: httpResponse.statusCode, data: text as! T)
+            return NetworkResult(statusCode: httpResponse.statusCode, data: text as! T, responseHeaders: httpResponse.allHeaderFields)
         }
 
         let decoder = JSONDecoder()
         let object = try decoder.decode(type, from: data)
-        return NetworkResult(statusCode: httpResponse.statusCode, data: object)
+        return NetworkResult(statusCode: httpResponse.statusCode, data: object, responseHeaders: httpResponse.allHeaderFields)
     }
 
     func processHeaders(_ headers: HttpHeaders, authorized: Bool) -> HttpHeaders {
