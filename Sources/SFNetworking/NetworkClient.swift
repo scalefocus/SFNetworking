@@ -83,10 +83,6 @@ public class NetworkClient: NetworkClientProtocol {
             log(prettyPrint(data))
         }
 
-        guard httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 else {
-            throw NetworkError.fail(data, httpResponse)
-        }
-
         if refreshTokenCodes.contains(httpResponse.statusCode) && authorized {
             if refreshTokenIfNecessary && authHandler != nil {
                 try await authHandler?.refreshToken()
@@ -103,6 +99,10 @@ public class NetworkClient: NetworkClientProtocol {
             else {
                 throw NetworkError.failedToRefreshToken
             }
+        }
+        
+        guard httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299 else {
+            throw NetworkError.fail(data, httpResponse)
         }
 
         if type == String.self {
