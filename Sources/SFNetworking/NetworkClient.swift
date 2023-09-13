@@ -11,10 +11,12 @@ public class NetworkClient: NetworkClientProtocol {
 
     public var baseUrl: String
     public var isLoggingEnabled: Bool
+    /// Http codes that will trigger a token refresh, if it's enabled
+    public var refreshTokenCodes: [Int]
 
     private weak var urlSession: URLSession?
     private var authHandler: NetworkAuthHandler?
-
+    
     private static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
@@ -24,11 +26,13 @@ public class NetworkClient: NetworkClientProtocol {
     public init(
         baseUrl: String,
         urlSession: URLSession = URLSession.shared,
+        refreshTokenCodes: [Int] = [401, 403],
         isLoggingEnabled: Bool = false,
         authHandler: NetworkAuthHandler? = nil
     ) {
         self.baseUrl = baseUrl
         self.urlSession = urlSession
+        self.refreshTokenCodes = refreshTokenCodes
         self.isLoggingEnabled = isLoggingEnabled
         self.authHandler = authHandler
     }
@@ -83,7 +87,7 @@ public class NetworkClient: NetworkClientProtocol {
             throw NetworkError.fail(data, httpResponse)
         }
 
-        if httpResponse.statusCode == 401 && authorized {
+        if refreshTokenCodes.contains(httpResponse.statusCode) && authorized {
             if refreshTokenIfNecessary && authHandler != nil {
                 try await authHandler?.refreshToken()
                 return try await self.request(
