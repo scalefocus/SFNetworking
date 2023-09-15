@@ -90,7 +90,7 @@ public class NetworkClient: NetworkClientProtocol {
                     endpoint: endpoint,
                     method: method,
                     headers: headers,
-                    body: data,
+                    body: body,
                     expecting: type,
                     authorized: authorized,
                     refreshTokenIfNecessary: false
