@@ -11,7 +11,7 @@ public typealias HttpHeaders = [String: String]
 
 public protocol NetworkClientProtocol {
 
-    var baseUrl: String { get }
+    var baseUrl: String { get set }
 
     /**
      * Handles HTTP requests for specific endpoint.
