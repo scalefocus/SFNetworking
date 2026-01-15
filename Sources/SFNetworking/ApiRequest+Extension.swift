@@ -57,7 +57,7 @@ extension ApiRequest {
         return result
     }
 
-    func response(
+    public func response(
         for environment: ApiEnvironment,
         networkClient: NetworkClientProtocol
     ) async throws -> NetworkResult<ResponseType>? {
