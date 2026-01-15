@@ -10,7 +10,9 @@ import Foundation
 extension ApiRequest {
     
     public var requiresAuthorization: Bool { false }
-    
+
+    public var headers: [String: String] { [:] }
+
     /// Executes an API call.
     ///
     /// - Parameters:
@@ -55,7 +57,10 @@ extension ApiRequest {
         return result
     }
 
-    func refreshToken() async throws {
-
+    func response(
+        for environment: ApiEnvironment,
+        networkClient: NetworkClientProtocol
+    ) async throws -> NetworkResult<ResponseType>? {
+        return nil
     }
 }

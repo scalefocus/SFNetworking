@@ -110,6 +110,10 @@ public class NetworkClient: NetworkClientProtocol {
             return NetworkResult(statusCode: httpResponse.statusCode, data: text as! T, responseHeaders: httpResponse.allHeaderFields)
         }
 
+        if type == Data.self {
+            return NetworkResult(statusCode: httpResponse.statusCode, data: data as! T, responseHeaders: httpResponse.allHeaderFields)
+        }
+
         let decoder = JSONDecoder()
         let object = try decoder.decode(type, from: data)
         return NetworkResult(statusCode: httpResponse.statusCode, data: object, responseHeaders: httpResponse.allHeaderFields)
