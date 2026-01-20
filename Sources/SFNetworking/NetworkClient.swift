@@ -44,6 +44,7 @@ public class NetworkClient: NetworkClientProtocol {
         body: Data? = nil,
         expecting type: T.Type = String.self,
         authorized: Bool = false,
+        timeoutInterval: TimeInterval = 60,
         refreshTokenIfNecessary: Bool = true
     ) async throws -> NetworkResult<T> {
 
@@ -60,6 +61,7 @@ public class NetworkClient: NetworkClientProtocol {
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.timeoutInterval = timeoutInterval
         for (key, value) in requestHeaders {
             request.addValue(value, forHTTPHeaderField: key)
         }

@@ -23,7 +23,14 @@ public protocol ApiRequest: Encodable {
     /// A dictionary containing all request headers
     var headers: [String: String] { get }
 
+    /// Indicates whether this request requires an authenticated user.
     var requiresAuthorization: Bool { get }
+
+    /// Optional multipart payload for the request.
+    var multipartData: MultipartData? { get }
+
+    /// The timeout interval, in seconds, for the request.
+    var timeoutInterval: TimeInterval { get }
 
     /// This method is called before processing any request. If it returns a non-nil result, the processing stops and the call returns the value obtained by this method
     ///

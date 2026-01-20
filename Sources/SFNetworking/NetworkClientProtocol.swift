@@ -35,6 +35,7 @@ public protocol NetworkClientProtocol {
         body: Data?,
         expecting type: T.Type,
         authorized: Bool,
+        timeoutInterval: TimeInterval,
         refreshTokenIfNecessary: Bool
     ) async throws -> NetworkResult<T>
 }
