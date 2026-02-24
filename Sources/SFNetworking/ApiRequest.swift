@@ -7,6 +7,16 @@
 
 import Foundation
 
+/// Describes how the HTTP request body should be constructed.
+public enum RequestBody {
+    /// Encode the request struct as JSON (default behaviour for non-GET/HEAD methods).
+    case json
+    /// Send raw bytes as the body (e.g. binary chunk uploads).
+    case raw(Data)
+    /// Send no body regardless of HTTP method.
+    case none
+}
+
 /// A base protocol fort all API requests
 ///
 public protocol ApiRequest: Encodable {
@@ -31,6 +41,9 @@ public protocol ApiRequest: Encodable {
 
     /// The timeout interval, in seconds, for the request.
     var timeoutInterval: TimeInterval { get }
+
+    /// Defines how the request body is constructed.
+    var requestBody: RequestBody { get }
 
     /// This method is called before processing any request. If it returns a non-nil result, the processing stops and the call returns the value obtained by this method
     ///

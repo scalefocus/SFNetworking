@@ -17,6 +17,8 @@ extension ApiRequest {
 
     public var timeoutInterval: TimeInterval { 60 }
 
+    public var requestBody: RequestBody { .json }
+
     /// Executes an API call.
     ///
     /// - Parameters:
@@ -53,8 +55,15 @@ extension ApiRequest {
             body = getMultipartBody(multipartData: multipartData, boundary: boundary)
             headers["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
         } else {
-            let encoder = JSONEncoder()
-            body = method == .get ? nil : try encoder.encode(self)
+            switch requestBody {
+            case .json:
+                let encoder = JSONEncoder()
+                body = (method == .get || method == .head) ? nil : try encoder.encode(self)
+            case .raw(let data):
+                body = data
+            case .none:
+                body = nil
+            }
         }
         let result = try await networkClient.request(
             endpoint: "/" + endpoint,
