@@ -13,4 +13,5 @@ public enum HttpMethod: String, Encodable {
     case put = "PUT"
     case delete = "DELETE"
     case patch = "PATCH"
+    case head = "HEAD"
 }
